@@ -1,0 +1,496 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Medidata.MAuth.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Medidata.MAuth.Core.AuthenticationException">
+            <summary>
+            The exception that is thrown when authentication fails for an HTTP request.
+            </summary>
+        </member>
+        <member name="M:Medidata.MAuth.Core.AuthenticationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.AuthenticationException"/> class with the specified message
+            and inner exception.
+            </summary>
+            <param name="message">A message that describes the authentication failure.</param>
+            <param name="innerException">An exception that is the cause of the current exception.</param>
+        </member>
+        <member name="T:Medidata.MAuth.Core.Exceptions.InvalidVersionException">
+            <summary>
+            The exception that is thrown when version no longer allowed is passed.
+            </summary>
+        </member>
+        <member name="M:Medidata.MAuth.Core.Exceptions.InvalidVersionException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.Exceptions.InvalidVersionException"/> class with the specified message.
+            </summary>
+            <param name="message">A message that describes the invalid version failure.</param>
+        </member>
+        <member name="M:Medidata.MAuth.Core.Exceptions.InvalidVersionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.Exceptions.InvalidVersionException"/> class with the specified message
+            and inner exception.
+            </summary>
+            <param name="message">A message that describes the invalid version failure.</param>
+            <param name="innerException">An exception that is the cause of the current exception.</param>
+        </member>
+        <member name="T:Medidata.MAuth.Core.RetriedRequestException">
+            <summary>
+            The exception that is thrown when a number of request attempts to the MAuth server fails.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.RetriedRequestException.Responses">
+            <summary>
+            Determines the responses for each request attempts made.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.RetriedRequestException.Request">
+            <summary>
+            Determines the request message of the first request attempt to the MAuth server.
+            </summary>
+        </member>
+        <member name="M:Medidata.MAuth.Core.RetriedRequestException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.RetriedRequestException"/> class with the specified message.
+            </summary>
+            <param name="message">A message that describes the request failure.</param>
+        </member>
+        <member name="M:Medidata.MAuth.Core.RetriedRequestException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.RetriedRequestException"/> class with the specified message
+            and inner exception.
+            </summary>
+            <param name="message">A message that describes the request failure.</param>
+            <param name="innerException">An exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthAuthenticator.AuthenticateRequest(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Verifies if the <see cref="T:System.Net.Http.HttpRequestMessage"/> request is authenticated or not.
+            </summary>
+            <param name="request">The <see cref="T:System.Net.Http.HttpRequestMessage"/> request.</param>
+            <returns>A task object of the boolean value that verifies if the request is authenticated or not.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthAuthenticator.GetAuthenticationInfo(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.IMAuthCore)">
+            <summary>
+            Extracts the authentication information from a <see cref="T:System.Net.Http.HttpRequestMessage"/>.
+            </summary>
+            <param name="request">The request that has the authentication information.</param>
+            <param name="mAuthCore">Instantiation of mAuthCore class.</param>
+            <returns>The authentication information with the payload from the request.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.Sign(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.MAuthSigningOptions)">
+            <summary>
+            Signs an HTTP request with the MAuth-specific authentication information.
+            </summary>
+            <param name="request">The HTTP request message to sign.</param>
+            <param name="options">The options that contains the required information for the signing.</param>
+            <returns>
+            A Task object which will result the request signed with the authentication information when it completes.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.Verify(System.Byte[],System.Byte[],System.String)">
+            <summary>
+            Verifies that the signed data is equal to the signature by using the public key of the keypair which
+            was used to sign the data.
+            </summary>
+            <param name="signedData">The data in its signed form.</param>
+            <param name="signature">The signature which the signed data generated from.</param>
+            <param name="publicKey">The public key used to decrypt the signed data.</param>
+            <returns>
+            If the signed data matches the signature, it returns <see langword="true"/>; otherwise it
+            returns <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.GetSignature(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.AuthenticationInfo)">
+            <summary>
+            Composes a signature as a SHA512 hash to be signed based on the request and authentication information.
+            </summary>
+            <param name="request">
+            The request which has the information (method, url and content) for the signature.
+            </param>
+            <param name="authInfo">
+            The <see cref="T:Medidata.MAuth.Core.AuthenticationInfo"/> which holds the application uuid and the time of the signature.
+            </param>
+            <returns>A Task object which will result the SHA512 hash of the signature when it completes.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.AddAuthenticationInfo(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.PrivateKeyAuthenticationInfo)">
+            <summary>
+            Adds authentication information to a <see cref="T:System.Net.Http.HttpRequestMessage"/>. 
+            </summary>
+            <param name="request">The request to add the information to.</param>
+            <param name="authInfo">
+            The authentication information with a private key to calculate the payload with.
+            </param>
+            <returns>
+            A Task object which will result the request with the authentication information added when it completes.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.CalculatePayload(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.PrivateKeyAuthenticationInfo)">
+            <summary>
+            Calculates the payload information based on the request and the authentication information.
+            </summary>
+            <param name="request">
+            The request which has the information (method, url and content) for the calculation.
+            </param>
+            <param name="authInfo">
+            The <see cref="T:Medidata.MAuth.Core.PrivateKeyAuthenticationInfo"/> which holds the application uuid, the time of the
+            signature and the private key.
+            </param>
+            <returns>A task object which will result the payload as a Base64 encoded string when completed.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCore.GetHeaderKeys">
+            <summary>
+            Gets the MAuthHeader and MAuthTimeHeader keys
+            </summary>
+            <returns>MAuthHeaderKey and MAuthTimeHeaderKey.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.FromResponse(System.Net.Http.HttpContent)">
+            <summary>
+            Deserializes an <see cref="T:Medidata.MAuth.Core.ApplicationInfo"/> object from a content of a Http message. 
+            </summary>
+            <param name="content">The content to deserialize the information from.</param>
+            <returns>A Task object which will result the application information when it completes.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.ToUnixTimeSeconds(System.DateTimeOffset)">
+            <summary>
+            Converts a <see cref="T:System.DateTimeOffset"/> value to a Unix equivalent time value. 
+            </summary>
+            <param name="value">The date and time to be converted.</param>
+            <returns>The total seconds elapsed from the Unix epoch (1970-01-01 00:00:00).</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.FromUnixTimeSeconds(System.Int64)">
+            <summary>
+            Converts a <see cref="T:System.Int64"/> value that is a Unix time in seconds to a UTC <see cref="T:System.DateTimeOffset"/>. 
+            </summary>
+            <param name="value">The Unix time seconds to be converted.</param>
+            <returns>The <see cref="T:System.DateTimeOffset"/> equivalent of the Unix time.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.ToHyphenString(System.Guid)">
+            <summary>
+            Returns the hyphenated representation of a <see cref="T:System.Guid"/> as a <see cref="T:System.String"/>. 
+            </summary>
+            <param name="uuid">The <see cref="T:System.Guid"/> to convert to the hyphenated string.</param>
+            <returns>The uuid in a format with hyphens.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.GetFirstValueOrDefault``1(System.Net.Http.Headers.HttpHeaders,System.String)">
+            <summary>
+            Provides the first value with a given key from a collection of HTTP headers or a default value if the
+            key is not found.
+            </summary>
+            <typeparam name="TValue">The type of the value to search for.</typeparam>
+            <param name="headers">The collection of the HTTP headers to search in.</param>
+            <param name="key">The key to search in the headers collection.</param>
+            <returns>The value if found; otherwise a default value for the given type.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.AsSHA512Hash(System.String)">
+            <summary>
+            Provides an SHA512 hash value of a string.
+            </summary>
+            <param name="value">The value for calculating the hash.</param>
+            <returns>The SHA512 hash of the input value as a hex-encoded byte array.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.AsCipherParameters(System.String)">
+            <summary>
+            Provides a string PEM (ASN.1) format key as an <see cref="T:Org.BouncyCastle.Crypto.ICipherParameters"/> object.
+            </summary>
+            <param name="key">The PEM key in ASN.1 format.</param>
+            <returns>The cipher parameters extracted from the key.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.Rewind(System.IO.Stream)">
+            <summary>
+            Sets the stream position to 0 if the stream is seekable; otherwise it will return the stream with its
+            current position.
+            </summary>
+            <param name="stream">The stream to rewind.</param>
+            <returns>
+            The passed stream with its position set to 0, or the position unchanged if the stream is not seekable.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.BuildEncodedQueryParams(System.String)">
+            <summary>
+            Builds Encoded QueryString after sort by code point and then uri encode key and values
+            </summary>
+            <param name="queryString"></param>
+            <returns>EncodedQueryParameter string.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreExtensions.NormalizeUriPath(System.String)">
+            <summary>
+            Normalizes the UriPath
+            </summary>
+            <param name="path"></param>
+            <returns>Normalized Uri Resource Path</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.Sign(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.MAuthSigningOptions)">
+            <summary>
+            Signs an HTTP request with the MAuth-specific authentication information.
+            </summary>
+            <param name="request">The HTTP request message to sign.</param>
+            <param name="options">The options that contains the required information for the signing.</param>
+            <returns>
+            A Task object which will result the request signed with the authentication information when it completes.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.Verify(System.Byte[],System.Byte[],System.String)">
+            <summary>
+            Verifies that the signed data is equal to the signature by using the public key of the keypair which
+            was used to sign the data.
+            </summary>
+            <param name="signedData">The data in its signed form.</param>
+            <param name="signature">The signature which the signed data generated from.</param>
+            <param name="publicKey">The public key used to decrypt the signed data.</param>
+            <returns>
+            If the signed data matches the signature, it returns <see langword="true"/>; otherwise it
+            returns <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.GetSignature(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.AuthenticationInfo)">
+            <summary>
+            Composes a signature as a SHA512 hash to be signed based on the request and authentication information.
+            </summary>
+            <param name="request">
+            The request which has the information (method, url and content) for the signature.
+            </param>
+            <param name="authInfo">
+            The <see cref="T:Medidata.MAuth.Core.AuthenticationInfo"/> which holds the application uuid and the time of the signature.
+            </param>
+            <returns>A Task object which will result the byte value of signature when it completes.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.AddAuthenticationInfo(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.PrivateKeyAuthenticationInfo)">
+            <summary>
+            Adds authentication information to a <see cref="T:System.Net.Http.HttpRequestMessage"/>. 
+            </summary>
+            <param name="request">The request to add the information to.</param>
+            <param name="authInfo">
+            The authentication information with a private key to calculate the payload with.
+            </param>
+            <returns>
+            A Task object which will result the request with the authentication information added when it completes.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.CalculatePayload(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.PrivateKeyAuthenticationInfo)">
+            <summary>
+            Calculates the payload information based on the request and the authentication information.
+            </summary>
+            <param name="request">
+            The request which has the information (method, url and content) for the calculation.
+            </param>
+            <param name="authInfo">
+            The <see cref="T:Medidata.MAuth.Core.PrivateKeyAuthenticationInfo"/> which holds the application uuid, the time of the
+            signature and the private key.
+            </param>
+            <returns>A task object which will result the payload as a Base64 encoded string when completed.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthCoreV2.GetHeaderKeys">
+            <summary>
+            Gets the MAuthHeader and MAuthTimeHeader keys.
+            </summary>
+            <returns>MAuthHeaderKey and MAuthTimeHeaderKey.</returns>
+        </member>
+        <member name="T:Medidata.MAuth.Core.MAuthServiceRetryPolicy">
+            <summary>
+            Determines the retrying policy with the MAuth server communication.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.MAuthServiceRetryPolicy.NoRetry">
+            <summary>
+            No attempt to retry the service request. The authentication will fail upon the first attempt if it is
+            not successful.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.MAuthServiceRetryPolicy.RetryOnce">
+            <summary>
+            1 more attempt to send a request to the MAuth service if the first attempt fails.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.MAuthServiceRetryPolicy.RetryTwice">
+            <summary>
+            2 more attempts to send a request to the MAuth service if the first attempt fails.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.MAuthServiceRetryPolicy.Agressive">
+            <summary>
+            9 more attempts to send a request to the MAuth service if the first attempt fails. This setting is not
+            recommended in production use as it can put more load the the MAuth service.
+            </summary>
+        </member>
+        <member name="T:Medidata.MAuth.Core.MAuthSigningHandler">
+            <summary>
+            A HTTP message handler to sign an outgoing <see cref="T:System.Net.Http.HttpRequestMessage"/> with the MAuth-specific
+            authentication information.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthSigningHandler.ClientAppUuid">
+            <summary>Gets the Uuid of the client application.</summary>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthSigningHandler.#ctor(Medidata.MAuth.Core.MAuthSigningOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.MAuthSigningHandler"/> class with the provided
+            <see cref="T:Medidata.MAuth.Core.MAuthSigningOptions"/>.
+            </summary>
+            <param name="options">The options for this message handler.</param>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthSigningHandler.#ctor(Medidata.MAuth.Core.MAuthSigningOptions,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Medidata.MAuth.Core.MAuthSigningHandler"/> class with the provided
+            <see cref="T:Medidata.MAuth.Core.MAuthSigningOptions"/> and an inner <see cref="T:System.Net.Http.HttpMessageHandler"/>. 
+            </summary>
+            <param name="options">The options for this message handler.</param>
+            <param name="innerHandler">
+            The inner handler which is responsible for processing the HTTP response messages.
+            </param>
+        </member>
+        <member name="M:Medidata.MAuth.Core.MAuthSigningHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+            Signs an HTTP request with the MAuth-specific authentication information and sends the request to the
+            inner handler to send to the server as an asynchronous operation.
+            </summary>
+            <param name="request">The HTTP request message to sign and send to the server.</param>
+            <param name="cancellationToken">A cancellation token to cancel operation.</param>
+            <returns>Returns <see cref="T:System.Threading.Tasks.Task`1"/>. The task object representing the asynchronous
+            operation.</returns>
+        </member>
+        <member name="T:Medidata.MAuth.Core.Models.MAuthVersion">
+            <summary>
+            Contains the Enumeration values for different versions supported by the library.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.Models.MAuthVersion.MWS">
+            <summary>
+            Defines the enumeration value for V1 protocol.
+            </summary>
+        </member>
+        <member name="F:Medidata.MAuth.Core.Models.MAuthVersion.MWSV2">
+            <summary>
+            Defines the enumeration value for V2 protocol.
+            </summary>
+        </member>
+        <member name="T:Medidata.MAuth.Core.MAuthOptionsBase">
+            <summary>
+            Contains the options used by the <see cref="T:Medidata.MAuth.Core.MAuthAuthenticator"/>.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.PrivateKey">
+            <summary>
+            Determines the RSA private key for the authentication requests. The value of this property can be set as a
+            valid path to a readable key file as well.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.MAuthServiceUrl">
+            <summary>Determines the endpoint of the MAuth authentication service.</summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.ApplicationUuid">
+            <summary>Determines the unique identifier used for the MAuth service authentication requests.</summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.AuthenticateRequestTimeoutSeconds">
+            <summary>
+            Determines the timeout in seconds for the MAuth authentication request - the MAuth component will try to
+            reach the MAuth server for this duration before throws an exception. If not specified, the default
+            value will be 3 seconds.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.MAuthServiceRetryPolicy">
+            <summary>
+            Determines the number of request retry attempts when communicating with the MAuth authentication service,
+            and the result is not success. If not specified, the default value will be
+            <see cref="F:Medidata.MAuth.Core.MAuthServiceRetryPolicy.RetryOnce"/> (1 more attempt additionally for the original request).
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.MAuthServerHandler">
+            <summary>
+            Determines the message handler for the requests to the MAuth server.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthOptionsBase.DisableV1">
+            <summary>
+            Determines the boolean value if V1 option of signing should be disabled or not with default value of false.
+            </summary>
+        </member>
+        <member name="T:Medidata.MAuth.Core.MAuthSigningOptions">
+            <summary>
+            Contains the options used by the <see cref="T:Medidata.MAuth.Core.MAuthSigningHandler"/>.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthSigningOptions.PrivateKey">
+            <summary>
+            Determines the RSA private key for the authentication requests. The value of this property can be set as a
+            valid path to a readable key file as well.</summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthSigningOptions.ApplicationUuid">
+            <summary>Determines the unique identifier used for the MAuth service authentication requests.</summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthSigningOptions.SignedTime">
+            <summary>
+            Determines the time when signing requests instead of the current date and time.
+            This property is for testing purposes only.
+            </summary>
+        </member>
+        <member name="P:Medidata.MAuth.Core.MAuthSigningOptions.SignVersions">
+            <summary>
+            Enumeration values of MAuth protocol versions to sign requests, if not provided defaults to `MWS`.
+            </summary>
+        </member>
+        <member name="T:Medidata.MAuth.Core.UtilityExtensions">
+            <summary>
+            Contains utility extension methods for MAuth.
+            </summary>
+        </member>
+        <member name="M:Medidata.MAuth.Core.UtilityExtensions.ParseAuthenticationHeader(System.String)">
+            <summary>
+            Parses an MAuth authentication HTTP header value for the application uuid and the MAuth signature payload.
+            If the parsing is not successful, an <see cref="T:System.ArgumentException"/> is thrown.
+            </summary>
+            <param name="headerValue">
+            The value of the X-MWS-Authentication HTTP header containing the application uuid and the MAuth signature
+            payload.
+            </param>
+            <returns>The application uuid and the payload encoded with Base64 encoding.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.UtilityExtensions.TryParseAuthenticationHeader(System.String,System.ValueTuple{System.Guid,System.String}@)">
+            <summary>
+            Parses an MAuth authentication HTTP header value for the application uuid and the MAuth signature payload.
+            A return value indicates whether the parsing succeeded.
+            </summary>
+            <param name="headerValue">
+            The value of the X-MWS-Authentication HTTP header containing the application uuid and the MAuth signature
+            payload.
+            </param>
+            <param name="result">
+            When this method returns, contains the application uuid and the Base64 encoded MAuth signature
+            payload contained in <paramref name="headerValue"/> if the parsing succeeded, or the default value of a
+            (<see cref="T:System.Guid"/>, <see cref="T:System.String"/>) tuple if the parsing failed. The parsing fails if the
+            <paramref name="headerValue"/> is <see langword="null"/> or <see cref="F:System.String.Empty"/>, or not of the
+            correct format. This parameter is passed uninitialized; any value originally supplied in
+            <paramref name="result"/> will be overwritten.</param>
+            <returns>
+            <see langword="true"/> if <paramref name="headerValue"/> was parsed successfully; otherwise,
+            <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.UtilityExtensions.Authenticate(System.Net.Http.HttpRequestMessage,Medidata.MAuth.Core.MAuthOptionsBase,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Authenticates a <see cref="T:System.Net.Http.HttpRequestMessage"/> with the provided options.
+            </summary>
+            <param name="request">The request message to authenticate.</param>
+            <param name="options">The MAuth options to use for the authentication.</param>
+            <param name="logger">The logger interface used for logging.</param>
+            <returns>The task for the operation that is when completes will result in <see langword="true"/> if
+            the authentication is successful; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.UtilityExtensions.GetVersionFromAuthenticationHeader(System.String)">
+            <summary>
+            Determines the MAuth version enumerator reading authHeader.
+            </summary>
+            <param name="authHeader"></param>
+            <returns>Enumeration value of MAuthVersion.</returns>
+        </member>
+        <member name="M:Medidata.MAuth.Core.UtilityExtensions.GetAuthHeaderValue(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Determines the correct MAuthHeader value with default check for V2.
+            </summary>
+            <param name="request"></param>
+            <returns>The MAuthHeader value.</returns>
+        </member>
+    </members>
+</doc>

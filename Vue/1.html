@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app1">
+        <!--插值表达式，绑定vue中的data数据-->
+        {{message}}
+    </div>
+
+    <div id="app2"> 
+        <h3>hi,{{name}}</h3>
+        <a v-bind:href="school.url.toUpperCase()">点我</a>
+        <a :href="school.url.toUpperCase()">{{school.name}}</a>
+    </div>
+    <!-- 插值表达式写在标签体中，单项绑定，用于给标签的属性绑定值-->
+
+
+    <div id="app3">
+        双向绑定：<input type="text" v-model:value="name">    
+        <div>data值:{{name}}</div>
+    </div>
+    <!--双向绑定使用再表单类元素上，必须有value属性，如输入框、单选框、多选框等-->
+
+
+    <!-- 通过网络引入Vue -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    
+    <script>
+        //1、创建一个vue对象
+        new Vue({
+            el: '#app1',//2、绑定vue作用的范围
+            data: {//3、定义页面中显示的模型数据
+                message: 'hello vue!'
+            }
+        })
+
+        new Vue({
+            el:'#app2',
+            data: {
+                name: 'Jack',
+                school:{
+                    name: '学校',
+                    url:'http://baidu.com'
+                }
+
+            }
+
+        }
+        )
+
+        const vm = new Vue({            
+            // data: {
+            //     name: 'JSON',
+            // }
+            data(){
+                return{
+                    name: '一次',
+                }
+            }
+        }
+        )
+        vm.$mount('#app3') //绑定id为root的容器
+
+        console.log(vm)
+    </script>
+</body>
+</html>

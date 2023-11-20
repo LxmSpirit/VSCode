@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Medidata.MAuth.Core</id>
+    <version>5.0.0</version>
+    <authors>Medidata Solutions, Inc.</authors>
+    <owners>Medidata Solutions, Inc.</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/mdsol/mauth-client-dotnet/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/mdsol/mauth-client-dotnet</projectUrl>
+    <description>A core package for Medidata HMAC protocol implementation. This package contains the core functionality which used by the MAuth authentication protocol-specific components. This package also can be used standalone if you want to sign HTTP/HTTPS requests with Medidata MAuth keys using the .NET HttpClient message handler mechanism.</description>
+    <copyright>Copyright © Medidata Solutions, Inc. 2017</copyright>
+    <tags>medidata mauth hmac authentication core httpclient messagehandler</tags>
+    <repository type="git" url="https://github.com/mdsol/mauth-client-dotnet" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="BouncyCastle" version="1.8.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Caching.Memory" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.3.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Caching.Memory" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
+        <dependency id="Portable.BouncyCastle" version="1.8.1.2" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.3.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.6.1" />
+      <frameworkAssembly assemblyName="System.Net.Http.WebRequest" targetFramework=".NETFramework4.6.1" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
